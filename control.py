@@ -21,18 +21,6 @@ class mainControl():
         self.root.title("Sistema de Controle Acadêmico")
         self.root.mainloop()
 
-    # def viewAluno(self):
-    #     vA = alunoControl()
-    #     vA.trigView()
-
-    def viewCurso(self):
-        vC = cursoControl()
-        vC.trigView()
-
-    def viewDisc(self):
-        vD = discControl()
-        vD.trigView()
-
 
 class alunoControl():
     def __init__(self, event):
@@ -60,11 +48,13 @@ class alunoControl():
             if count < len(self.listaAlunos):
                 raise alunoExistente()
             else:
-                print("Aluno inserido!")
+                print("Aluno inserido!")#Mostra pro usuario tbm
+
+                                        #E SE CRIASSE A CLASSE MENSAGEMVIEW E USASSE ELA PRA GERAL?
                 self.listaAlunos.append(alunoInsert)
 
         except alunoExistente:
-            print("Matrícula já existente!\nTente outra...")
+            print("Matrícula já existente!\nTente outra...")#Cade a mensagem pro usuário?
 
     def closeHandler(self, event):
         self.insertView.destroy()
@@ -89,30 +79,47 @@ class alunoControl():
         #A busca acima monta uma string com o resiltado e é passada pra uma messagebox
         self.searchView.mostraAluno(string)
 
-# class insertAlunoControl():
-#     def __init__(self, event):
-#         self.insertView = view.insertAlunoView(self)
-
-#     def insertHandler(self, event):
-#         matricula = self.insertView.EnterMat.get()
-#         nome = self.insertView.EnterName.get()
-#         curso = self.insertView.EnterCurso.get()
-#         alunoInsert = model.Aluno(matricula, nome, cursoControl)
+    def closeSearchHandler(self, event):
+        self.searchView.destroy()
     
 
 class cursoControl():
-    def __init__(self):
-        self.view = None
+    def __init__(self, event):
+        self.view = view.cursoView(self)
+        self.listaCursos = []
 
-    def trigView(self):
-        self.view = view.cursoView()
+    def insertCurso(self):
+        self.insertView = view.insertCursoView(self)
+
+    def insertHandler(self, event):
+        nome = self.insertView.EnterName.get()
+        cursoInsert = model.Curso(nome) 
+        count = 0
+        if not self.listaCursos:
+            self.listaCursos.append(cursoInsert)
+        else:
+            for curso in self.listaCursos:
+                if cursoInsert.getNome() != curso.getNome():
+                count += 1
+            try:
+                if count < len(self.listaCursos):
+                    raise alunoExistente()#Muda o exception
+                else:
+                    # print("Aluno inserido!")
+                    self.listaCursos.append(cursoInsert)
+
+            except alunoExistente:
+                print("Matrícula já existente!\nTente outra...")
+
+    def closeHandler(self, event):
+        self.insertView.destroy()
+
 
 class discControl():
-    def __init__(self):
-        self.view = None
+    def __init__(self, event):
+        self.view = view.discView(self)
 
-    def trigView(self):
-        self.view = view.discView()
+        
 
 # class gradeControl()
 # class historicoControl()

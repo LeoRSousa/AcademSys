@@ -14,6 +14,29 @@ class Aluno:
     def getCurso(self):
         return self.__curso
 
+#Classe Curso
+class Curso:
+    def __init__(self, nome):
+        self.__nome = nome
+
+        self.__alunos = [] #Criar uma lista de alunos
+        self.__grades = [] #Criar uma lista de grades
+
+    def getNome(self):
+        return self.__nome
+
+    def getAlunos(self):
+        self.__alunos
+
+    def getGrades(self):
+        return self.__grades
+
+    def addAluno(self, aluno):
+        self.__alunos.append(aluno)
+
+    def addGrade(self, grade):
+        self.__grades.append(grade)
+
 #Classe Histórico
 # class Historico:
 #     def __init__(self, aluno):
