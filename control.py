@@ -3,6 +3,13 @@ from tkinter import messagebox
 import model as model
 import view as view
 
+#INÍCIO DAS EXCEPTION CLASS
+class alunoExistente(Exception):
+    pass
+
+
+#FIM DAS EXCEPTION CLASS
+
 class mainControl():
     def __init__(self):
         self.root = Tk()
@@ -36,7 +43,7 @@ class alunoControl():
     # def trigView(self):
         # self.view = view.alunoView()
     
-    def insertAluno(self, event2):
+    def insertAluno(self, event):
         self.insertView = view.insertAlunoView(self)
 
     def insertHandler(self, event):
@@ -44,7 +51,13 @@ class alunoControl():
         nome = self.insertView.EnterName.get()
         curso = self.insertView.EnterCurso.get()
         alunoInsert = model.Aluno(matricula, nome, cursoControl)
+        try:
+            if alunoInsert.getNroMatric() in self.listaAlunos:
+                raise alunoExistente()
+
+        
         self.listaAlunos.append(alunoInsert)
+        # print("Nome:{} Mat.:{}".format(alunoInsert.getNome(), alunoInsert.getNroMatric()))
 
         
 # class insertAlunoControl():

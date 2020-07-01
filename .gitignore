@@ -1,2 +1,5 @@
 #Não upar a pasta __pycache__
 __pycache__/
+
+#Arquivo de testes
+a.py
