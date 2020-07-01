@@ -50,7 +50,7 @@ class alunoView(tk.Toplevel):
 
         self.Btn2 = tk.Button(self.Frm2, text = "Buscar", height = 2, width = 25)
         self.Btn2.pack(side = "top")
-        # self.Btn2.bind("<Button>", control.mainControl.viewCurso)
+        self.Btn2.bind("<Button>", ctrl.searchAluno)
 
         self.Btn3 = tk.Button(self.Frm3, text = "Ver Histórico", height = 2, width = 25)
         self.Btn3.pack(side = "top")
@@ -64,7 +64,7 @@ class insertAlunoView(tk.Toplevel):
     def __init__(self, ctrl):
         tk.Toplevel.__init__(self)
         self.geometry('250x200')
-        self.title("Estudante")
+        self.title("Inserir aluno")
 
         self.Frm1 = Frame(self)
         self.Frm2 = Frame(self)
@@ -86,10 +86,6 @@ class insertAlunoView(tk.Toplevel):
         self.EnterCurso = Entry(self.Frm3, width = 20)
         self.EnterCurso.pack(side = RIGHT)
         #Tentar fazer uma lista de opções
-        # self.escolhaCombo = tk.StringVar()
-        # self.combobox = ttk.Combobox(self.frameDiscip, width = 15 , textvariable = self.escolhaCombo)
-        # self.combobox.pack(side="left")
-        # self.combobox['values'] = listaCodDiscip
 
         self.EnterButton = Button(self.Frm4, text = "Enviar")
         self.EnterButton.pack(side = "left")
@@ -104,6 +100,22 @@ class insertAlunoView(tk.Toplevel):
         self.Frm3.pack()
         self.Frm4.pack()
 
+class searchAlunoView(tk.Toplevel):
+    def __init__(self, ctrl):
+        tk.Toplevel.__init__(self)
+        self.geometry('250x200')
+        self.title("Buscar")
+
+        self.Fr1 = Frame(self)
+        self.Fr2 = Frame(self)
+
+        self.Lb1 = Label(self.Fr1, text = "Matrícula:")
+        self.Lb1.pack(side = "left")
+        self.EntryMat = Entry(self.Fr1, width = 20)
+        self.EntryMat.pack()
+
+        self.Fr1.pack()
+        self.Fr2.pack()
 
 class cursoView(Toplevel):
     def __init__(self):

@@ -68,6 +68,10 @@ class alunoControl():
 
     def closeHandler(self, event):
         self.insertView.destroy()
+
+    def searchAluno(self, event):
+        self.searchView = view.searchAlunoView(self)
+        # self.insertView.EnterMat.get()
         
 # class insertAlunoControl():
 #     def __init__(self, event):
