@@ -39,9 +39,6 @@ class alunoControl():
         self.listaAlunos = []
         self.view = None
         self.view = view.alunoView(self)
-    #TEESTAR SE N POSSO COMEÇAR DIRETO
-    # def trigView(self):
-        # self.view = view.alunoView()
     
     def insertAluno(self, event):
         self.insertView = view.insertAlunoView(self)
@@ -51,14 +48,26 @@ class alunoControl():
         nome = self.insertView.EnterName.get()
         curso = self.insertView.EnterCurso.get()
         alunoInsert = model.Aluno(matricula, nome, cursoControl)
+
+        #Tratamento de inserção, caso já exista a matrícula
+        count = 0
+        for mat in self.listaAlunos:
+            if alunoInsert.getNroMatric() != mat.getNroMatric():
+                count += 1
+                #Se o contador for menor que os itens na lista, então há um elemento igual
+        # print("Contador: {}".format(count))
         try:
-            if alunoInsert.getNroMatric() in self.listaAlunos:
+            if count < len(self.listaAlunos):
                 raise alunoExistente()
+            else:
+                print("Aluno inserido!")
+                self.listaAlunos.append(alunoInsert)
 
-        
-        self.listaAlunos.append(alunoInsert)
-        # print("Nome:{} Mat.:{}".format(alunoInsert.getNome(), alunoInsert.getNroMatric()))
+        except alunoExistente:
+            print("Matrícula já existente!\nTente outra...")
 
+    def closeHandler(self, event):
+        self.insertView.destroy()
         
 # class insertAlunoControl():
 #     def __init__(self, event):

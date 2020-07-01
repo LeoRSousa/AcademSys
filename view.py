@@ -85,12 +85,19 @@ class insertAlunoView(tk.Toplevel):
         self.Lb3.pack(side = "left")
         self.EnterCurso = Entry(self.Frm3, width = 20)
         self.EnterCurso.pack(side = RIGHT)
+        #Tentar fazer uma lista de opções
+        # self.escolhaCombo = tk.StringVar()
+        # self.combobox = ttk.Combobox(self.frameDiscip, width = 15 , textvariable = self.escolhaCombo)
+        # self.combobox.pack(side="left")
+        # self.combobox['values'] = listaCodDiscip
 
         self.EnterButton = Button(self.Frm4, text = "Enviar")
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
-        #Bttns
+        self.EnterButton = Button(self.Frm4, text = "Sair")
+        self.EnterButton.pack(side = "left")
+        self.EnterButton.bind("<Button>", ctrl.closeHandler)
 
         self.Frm1.pack()
         self.Frm2.pack()
