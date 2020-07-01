@@ -13,3 +13,19 @@ class Aluno:
 
     def getCurso(self):
         return self.__curso
+
+#Classe Histórico
+# class Historico:
+#     def __init__(self, aluno):
+#         self.__aluno = aluno
+
+#         self.__disciplinas = []
+
+#     def getAluno(self):
+#         return self.__aluno
+    
+#     def getDisciplinas(self):
+#         return self.__disciplinas
+
+#     def addDisciplina(self, disciplina):
+#         self.__disciplinas.append(disciplina)

@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import tkinter as tk
 import model as model
 import control as control
@@ -111,11 +112,18 @@ class searchAlunoView(tk.Toplevel):
 
         self.Lb1 = Label(self.Fr1, text = "Matrícula:")
         self.Lb1.pack(side = "left")
-        self.EntryMat = Entry(self.Fr1, width = 20)
-        self.EntryMat.pack()
+        self.EnterMat = Entry(self.Fr1, width = 20)
+        self.EnterMat.pack()
+
+        self.SearchButton = Button(self.Fr2, text = "Buscar")
+        self.SearchButton.pack(side = "top")
+        self.SearchButton.bind("<Button>", ctrl.searchHandler)
 
         self.Fr1.pack()
         self.Fr2.pack()
+
+    def mostraAluno(self, string):
+        tk.messagebox.showinfo("Aluno", string)
 
 class cursoView(Toplevel):
     def __init__(self):

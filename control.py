@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+# from tkinter import messagebox
 import model as model
 import view as view
 
@@ -71,8 +71,24 @@ class alunoControl():
 
     def searchAluno(self, event):
         self.searchView = view.searchAlunoView(self)
-        # self.insertView.EnterMat.get()
         
+    def searchHandler(self, event):
+        mat = self.searchView.EnterMat.get()
+        print(mat)
+        string = None
+        #Verificar se não está vazio antes, ou dá problema na busca
+        if not self.listaAlunos:
+            string = "Nenhum aluno cadastrado!"
+        else:
+            for al in self.listaAlunos:
+                if mat == al.getNroMatric():
+                    string = "Matrícula: " + al.getNroMatric() + "\nNome: " + al.getNome()
+                    break
+                else:
+                    string = "Aluno Não encontrado!"
+        #A busca acima monta uma string com o resiltado e é passada pra uma messagebox
+        self.searchView.mostraAluno(string)
+
 # class insertAlunoControl():
 #     def __init__(self, event):
 #         self.insertView = view.insertAlunoView(self)
