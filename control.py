@@ -1,7 +1,8 @@
 from tkinter import *
-# from tkinter import messagebox
 import model as model
 import view as view
+import os.path
+import pickle
 
 #INÍCIO DAS EXCEPTION CLASS
 class alunoExistente(Exception):

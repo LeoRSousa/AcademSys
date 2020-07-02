@@ -6,3 +6,9 @@ a.py
 
 #Arquivo do trabalho 7, base para o Trabalho Final
 Trabalho7_2018015965.py
+
+#Arquivos que salvam os dados entrados
+Alunos.pickle
+Cursos.pickle
+Grades.pickle
+Disciplinas.pickle
