@@ -80,20 +80,20 @@ class insertAlunoView(tk.Toplevel):
         self.Frm3 = Frame(self)
         self.Frm4 = Frame(self)
 
-        self.Lb1 = Label(self.Frm1, text = "Nome:\t")
+        self.Lb1 = Label(self.Frm1, text = "Nome:")
         self.Lb1.pack(side = "left")
         self.EnterName = Entry(self.Frm1, width = 20)
-        self.EnterName.pack(side = RIGHT)
+        self.EnterName.pack(side = "left")
 
-        self.Lb2 = Label(self.Frm2, text = "Matrícula:\t")
+        self.Lb2 = Label(self.Frm2, text = "Matrícula:")
         self.Lb2.pack(side = "left")
         self.EnterMat = Entry(self.Frm2, width = 20)
-        self.EnterMat.pack(side = RIGHT)
+        self.EnterMat.pack(side = "left")
 
-        self.Lb3 = Label(self.Frm3, text = "Curso:\t")
+        self.Lb3 = Label(self.Frm3, text = "Curso:")
         self.Lb3.pack(side = "left")
         self.EnterCurso = Entry(self.Frm3, width = 20)
-        self.EnterCurso.pack(side = RIGHT)
+        self.EnterCurso.pack(side = "left")
         #Tentar fazer uma lista de opções
 
         self.EnterButton = Button(self.Frm4, text = "Enviar")
@@ -157,7 +157,7 @@ class cursoView(Toplevel):
 
         self.gradesButton = Button(self.Frm1, text = "Grades", height = 2, width = 25)
         self.gradesButton.pack(side = "top")
-        # self.insertButton.bind("<Button>", )
+        self.gradesButton.bind("<Button>", ctrl.insertGrade)
 
         self.closeButton = Button(self.Frm1, text = "Voltar", height = 2, width = 25)
         self.closeButton.pack(side = "top")
@@ -223,16 +223,60 @@ class searchCursoView(tk.Toplevel):
         self.Fr1.pack()
         self.Fr2.pack()
 
+class insertGradeView(tk.Toplevel):
+    def __init__(self, ctrl):
+        tk.Toplevel.__init__(self)
+        self.geometry('250x200')
+        self.title("Grade")
 
-class discView(Toplevel):
+        self.Fr1 = Frame(self)#Talvez uma lista suspensa de cursos
+        self.Fr2 = Frame(self)
+        self.Fr3 = Frame(self)
+
+        self.CursoLabel = Label(self.Fr1, text = "Nome do curso")
+        self.CursoLabel.pack(side = "left")
+        self.EnterCurso = Entry(self.Fr1, width = 20)
+        self.EnterCurso.pack(side = "left")
+
+        self.AnoLabel = Label(self.Fr2, text = "Ano da grade")
+        self.AnoLabel.pack(side = "left")
+        self.EnterAno = Entry(self.Fr2, width = 20)
+        self.EnterAno.pack(side = "left")
+
+        self.insertButton = Button(self.Fr3, text = "Inserir")
+        self.insertButton.pack(side = "left")
+        self.insertButton.bind("<Button>", ctrl.insertGradeHandler)
+
+        self.closeButton = Button(self.Fr3, text = "Voltar")
+        self.closeButton.pack(side = "left")
+        # self.insertButton.bind("<Button>", )
+
+        self.Fr1.pack()
+        self.Fr2.pack()
+        self.Fr3.pack()        
+
+
+class discView(tk.Toplevel):
     def __init__(self, ctrl):
         tk.Toplevel.__init__(self)
         self.geometry('300x300')
         self.title("Disciplinas")
 
         self.Frm1 = Frame(self)
-        self.Btn1 = Button(self.Frm1, text = "Disciplina", height = 2, width = 25)
-        self.Btn1.pack(side = "top")
+
+        self.insertButton = tk.Button(self.Frm1, text = "Inserir", height = 2, width = 25)
+        self.insertButton.pack(side = "top")
+        # self.insertButton.bind("<Button>", ctrl.insertDisc)
+
+        self.searchButton = tk.Button(self.Frm1, text = "Buscar", height = 2, width = 25)
+        self.searchButton.pack(side = "top")
+        # self.searchButton.bind("<Button>", ctrl.searchDisc)
+
+        self.closeButton = tk.Button(self.Frm1, text = "Voltar", height = 2, width = 25)
+        self.closeButton.pack(side = "top")
+        self.closeButton.bind("<Button>", ctrl.closeMainHandler)
+
+        self.Frm1.pack()
 
 # class gradeView(Toplevel):
 # class historicoView(Toplevel):

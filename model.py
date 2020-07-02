@@ -37,6 +37,23 @@ class Curso:
     def addGrade(self, grade):
         self.__grades.append(grade)
 
+#Classe Grade
+class Grade:
+    def __init__(self, ano, curso):
+        self.__ano = ano
+        self.__curso = curso
+        
+        self.__disciplinas = []
+
+        curso.addGrade(self)
+
+    def getAno(self):
+        return self.__ano
+
+    def getCurso(self):
+        return self.__curso
+
+
 #Classe Histórico
 # class Historico:
 #     def __init__(self, aluno):

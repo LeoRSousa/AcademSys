@@ -27,6 +27,11 @@ class alunoControl():
         self.listaAlunos = []
         self.view = view.alunoView(self)
 
+    #Mata a janela(geral) de Alunos
+    def closeMainHandler(self, event):
+        self.view.destroy()
+    
+    #INSERÇÃO-----------------------------------------------------------
     def insertAluno(self, event):
         self.insertView = view.insertAlunoView(self)
 
@@ -61,14 +66,12 @@ class alunoControl():
                 print("Matrícula já existente!\nTente outra...")#Cade a mensagem pro usuário?
                 mensagemAlExst = view.showMsg("Matrícula já existente!\nTente outra...")
 
-    #Mata a janela(geral) de Alunos
-    def closeMainHandler(self, event):
-        self.view.destroy()
-
     #Mata a janela de inserção Alunos
     def closeHandler(self, event):
         self.insertView.destroy()
+    #--------------------------------------------------------------------
 
+    #BUSCA---------------------------------------------------------------
     def searchAluno(self, event):
         self.searchView = view.searchAlunoView(self)
         
@@ -92,16 +95,19 @@ class alunoControl():
     #Mata a janela busca de Alunos
     def closeSearchHandler(self, event):
         self.searchView.destroy()
-    
+    #--------------------------------------------------------------------
+
 
 class cursoControl():
     def __init__(self, event):
         self.view = view.cursoView(self)
         self.listaCursos = []
+        self.listaGrades = []
 
     def closeMainHandler(self, event):
         self.view.destroy()
 
+    #INSERÇÃO-----------------------------------------------------------
     def insertCurso(self, event):
         self.insertView = view.insertCursoView(self)
 
@@ -131,7 +137,9 @@ class cursoControl():
 
     def closeHandler(self, event):
         self.insertView.destroy()
+    #--------------------------------------------------------------------
 
+    #BUSCA---------------------------------------------------------------
     def searchCurso(self, event):
         self.searchView = view.searchCursoView(self)
 
@@ -162,6 +170,21 @@ class cursoControl():
 
     def closeSearchHandler(self, event):
         self.searchView.destroy()
+    #--------------------------------------------------------------------
+
+    #GRADES--------------------------------------------------------------
+    def insertGrade(self, event):
+        self.gradeView = view.insertGradeView(self)
+
+    def insertGradeHandler(self, event):
+        curso = self.gradeView.EnterCurso.get()
+        ano = self.gradeView.EnterAno.get()
+        gradeInsert = model.Grade(ano, curso)
+        if not self.listaGrades:
+            #Fazer um if para ver se o curso existe
+            self.listaGrades.append(gradeInsert)
+            view.showMsg("Grade inserida!")
+    #--------------------------------------------------------------------
     
 
 class discControl():
@@ -171,6 +194,15 @@ class discControl():
 
     def closeMainHandler(self, event):
         self.view.destroy()
+
+    #INSERÇÃO-----------------------------------------------------------
+
+    #-------------------------------------------------------------------
+
+    #BUSCA--------------------------------------------------------------
+
+    #-------------------------------------------------------------------
+
 
 # class gradeControl()
 # class historicoControl()
