@@ -6,8 +6,8 @@ import view as view
 #INÍCIO DAS EXCEPTION CLASS
 class alunoExistente(Exception):
     pass
-
-
+class cursoExistente(Exception):
+    pass
 #FIM DAS EXCEPTION CLASS
 
 class mainControl():
@@ -25,9 +25,8 @@ class mainControl():
 class alunoControl():
     def __init__(self, event):
         self.listaAlunos = []
-        self.view = None
         self.view = view.alunoView(self)
-    
+
     def insertAluno(self, event):
         self.insertView = view.insertAlunoView(self)
 
@@ -35,27 +34,38 @@ class alunoControl():
         matricula = self.insertView.EnterMat.get()
         nome = self.insertView.EnterName.get()
         curso = self.insertView.EnterCurso.get()
-        alunoInsert = model.Aluno(matricula, nome, cursoControl)
+        alunoInsert = model.Aluno(matricula, nome, curso)
 
-        #Tratamento de inserção, caso já exista a matrícula
-        count = 0
-        for mat in self.listaAlunos:
-            if alunoInsert.getNroMatric() != mat.getNroMatric():
-                count += 1
-                #Se o contador for menor que os itens na lista, então há um elemento igual
-        # print("Contador: {}".format(count))
-        try:
-            if count < len(self.listaAlunos):
-                raise alunoExistente()
-            else:
-                print("Aluno inserido!")#Mostra pro usuario tbm
+        #Se não tiver nada na lista ele vai inserir
+        if not self.listaAlunos:
+            self.listaAlunos.append(alunoInsert)
+            mensagemIns = view.showMsg("Aluno inserido!")
+        #Se já puver aulguma coisa na lista
+        else:
+            #Tratamento de inserção, caso já exista a matrícula
+            count = 0
+            for mat in self.listaAlunos:
+                if alunoInsert.getNroMatric() != mat.getNroMatric():
+                    count += 1
+                    #Se o contador for menor que os itens na lista, então há um elemento igual
+            # print("Contador: {}".format(count))
+            try:
+                if count < len(self.listaAlunos):
+                    raise alunoExistente()
+                else:
+                    self.listaAlunos.append(alunoInsert)
+                    print("Aluno inserido!")
+                    mensagemIns = view.showMsg("Aluno inserido!")
 
-                                        #E SE CRIASSE A CLASSE MENSAGEMVIEW E USASSE ELA PRA GERAL?
-                self.listaAlunos.append(alunoInsert)
+            except alunoExistente:
+                print("Matrícula já existente!\nTente outra...")#Cade a mensagem pro usuário?
+                mensagemAlExst = view.showMsg("Matrícula já existente!\nTente outra...")
 
-        except alunoExistente:
-            print("Matrícula já existente!\nTente outra...")#Cade a mensagem pro usuário?
+    #Mata a janela(geral) de Alunos
+    def closeMainHandler(self, event):
+        self.view.destroy()
 
+    #Mata a janela de inserção Alunos
     def closeHandler(self, event):
         self.insertView.destroy()
 
@@ -79,6 +89,7 @@ class alunoControl():
         #A busca acima monta uma string com o resiltado e é passada pra uma messagebox
         self.searchView.mostraAluno(string)
 
+    #Mata a janela busca de Alunos
     def closeSearchHandler(self, event):
         self.searchView.destroy()
     
@@ -88,38 +99,78 @@ class cursoControl():
         self.view = view.cursoView(self)
         self.listaCursos = []
 
-    def insertCurso(self):
+    def closeMainHandler(self, event):
+        self.view.destroy()
+
+    def insertCurso(self, event):
         self.insertView = view.insertCursoView(self)
 
     def insertHandler(self, event):
         nome = self.insertView.EnterName.get()
         cursoInsert = model.Curso(nome) 
         count = 0
+        #Se não tiver nada na lista ele vai inserir, se tiver ele procura por elementos iguais
         if not self.listaCursos:
             self.listaCursos.append(cursoInsert)
+            view.showMsg("Curso inserido!")
         else:
             for curso in self.listaCursos:
                 if cursoInsert.getNome() != curso.getNome():
-                count += 1
+                    count += 1
             try:
                 if count < len(self.listaCursos):
-                    raise alunoExistente()#Muda o exception
+                    raise cursoExistente()
                 else:
-                    # print("Aluno inserido!")
+                    print("Curso inserido!")
                     self.listaCursos.append(cursoInsert)
+                    view.showMsg("Curso inserido!")
 
-            except alunoExistente:
-                print("Matrícula já existente!\nTente outra...")
+            except cursoExistente:
+                print("Curso já existente!\nTente outra...")
+                view.showMsg("Curso já existente!\nTente outro...")
 
     def closeHandler(self, event):
         self.insertView.destroy()
 
+    def searchCurso(self, event):
+        self.searchView = view.searchCursoView(self)
+
+    def searchHandler(self, event):
+        nome = self.searchView.EnterNome.get()
+        print(nome)
+        string = ""
+        #Verificar se não está vazio antes, ou dá problema na busca
+        if not self.listaCursos:
+            string = "Nenhum curso cadastrado!"
+        else:
+            for cs in self.listaCursos:
+                if nome == cs.getNome():
+                    string = "Curso: " + cs.getNome() + "\n"
+                    break
+                else:
+                    string = "Curso Não encontrado!"
+        #A busca acima monta uma string com o resiltado e é passada pra uma messagebox
+        view.showMsg(string)
+
+    def verTodosHandler(self, event):
+        string = "Cursos:\n"
+        if not self.listaCursos:
+            string = "Nenhum curso cadastrado!"
+        for cs in self.listaCursos:
+            string += cs.getNome() + "\n"
+        view.showMsg(string)
+
+    def closeSearchHandler(self, event):
+        self.searchView.destroy()
+    
 
 class discControl():
     def __init__(self, event):
         self.view = view.discView(self)
+        self.listaDisc = []
 
-        
+    def closeMainHandler(self, event):
+        self.view.destroy()
 
 # class gradeControl()
 # class historicoControl()
