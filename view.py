@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 import tkinter as tk
 import model as model
 import control as control
@@ -100,7 +101,7 @@ class insertAlunoView(tk.Toplevel):
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
-        self.CloseButton = Button(self.Frm4, text = "Sair", bg = "red", fg = "white")
+        self.CloseButton = Button(self.Frm4, text = "Salvar e Sair", bg = "red", fg = "white")
         self.CloseButton.pack(side = "left")
         self.CloseButton.bind("<Button>", ctrl.closeHandler)
 
@@ -224,7 +225,7 @@ class searchCursoView(tk.Toplevel):
         self.Fr2.pack()
 
 class insertGradeView(tk.Toplevel):
-    def __init__(self, ctrl):
+    def __init__(self, ctrl, listaCursos):
         tk.Toplevel.__init__(self)
         self.geometry('250x200')
         self.title("Grade")
@@ -233,10 +234,17 @@ class insertGradeView(tk.Toplevel):
         self.Fr2 = Frame(self)
         self.Fr3 = Frame(self)
 
+        # self.CursoLabel = Label(self.Fr1, text = "Nome do curso")
+        # self.CursoLabel.pack(side = "left")
+        # self.EnterCurso = Entry(self.Fr1, width = 20)
+        # self.EnterCurso.pack(side = "left")
+        #
         self.CursoLabel = Label(self.Fr1, text = "Nome do curso")
         self.CursoLabel.pack(side = "left")
-        self.EnterCurso = Entry(self.Fr1, width = 20)
-        self.EnterCurso.pack(side = "left")
+        self.escolha = StringVar()
+        self.combobox = ttk.Combobox(self.Fr1, width = 15 , textvariable = self.escolha)
+        self.combobox.pack(side="left")
+        self.combobox['values'] = listaCursos
 
         self.AnoLabel = Label(self.Fr2, text = "Ano da grade")
         self.AnoLabel.pack(side = "left")
@@ -249,7 +257,7 @@ class insertGradeView(tk.Toplevel):
 
         self.closeButton = Button(self.Fr3, text = "Voltar")
         self.closeButton.pack(side = "left")
-        # self.insertButton.bind("<Button>", )
+        self.closeButton.bind("<Button>", ctrl.closeGradeView)
 
         self.Fr1.pack()
         self.Fr2.pack()

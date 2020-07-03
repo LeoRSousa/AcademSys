@@ -15,8 +15,6 @@ class mainControl():
     def __init__(self):
         self.root = Tk()
 
-        # self.ctrlAluno = alunoControl()
-
         self.view = view.mainView(self.root)
 
         self.root.title("Sistema de Controle Acadêmico")
@@ -25,7 +23,14 @@ class mainControl():
 
 class alunoControl():
     def __init__(self, event):
-        self.listaAlunos = []
+        #Cria ou carrega o arquivo contendo os alunos
+        if not os.path.isfile("Alunos.pickle"):
+            self.listaAlunos = []
+        else:
+            with open("Alunos.pickle", "rb") as arq:
+                self.listaAlunos = pickle.load(arq)
+        
+        #Cria a view para as operações do aluno
         self.view = view.alunoView(self)
 
     #Mata a janela(geral) de Alunos
@@ -46,7 +51,7 @@ class alunoControl():
         if not self.listaAlunos:
             self.listaAlunos.append(alunoInsert)
             mensagemIns = view.showMsg("Aluno inserido!")
-        #Se já puver aulguma coisa na lista
+            #Se já puver aulguma coisa na lista
         else:
             #Tratamento de inserção, caso já exista a matrícula
             count = 0
@@ -69,6 +74,10 @@ class alunoControl():
 
     #Mata a janela de inserção Alunos
     def closeHandler(self, event):
+        #Para salvar os alunos no arquivo, sempre quando fechar a tela de inserção
+        if len(self.listaAlunos) != 0:
+            with open("Alunos.pickle", "wb") as arq:
+                pickle.dump(self.listaAlunos, arq)
         self.insertView.destroy()
     #--------------------------------------------------------------------
 
@@ -101,12 +110,31 @@ class alunoControl():
 
 class cursoControl():
     def __init__(self, event):
+        #Cria ou carrega o arquivo contendo os cursos
+        if not os.path.isfile("Cursos.pickle"):
+            self.listaCursos = []
+        else:
+            with open("Cursos.pickle", "rb") as arq:
+                self.listaCursos = pickle.load(arq)
+        #Cria ou carrega o arquivo contendo as grades
+        if not os.path.isfile("Grades.pickle"):
+            self.listaGrades = []
+        else:
+            with open("Grades.pickle", "rb") as arq:
+                self.listaGrades = pickle.load(arq)
+        
+        self.listaC = self.nomeCursos()
+
         self.view = view.cursoView(self)
-        self.listaCursos = []
-        self.listaGrades = []
 
     def closeMainHandler(self, event):
         self.view.destroy()
+
+    def nomeCursos(self):
+        nomesCursos = []
+        for curso in self.listaCursos:
+            nomesCursos.append(curso.getNome())
+        return nomesCursos
 
     #INSERÇÃO-----------------------------------------------------------
     def insertCurso(self, event):
@@ -137,6 +165,10 @@ class cursoControl():
                 view.showMsg("Curso já existente!\nTente outro...")
 
     def closeHandler(self, event):
+        #Para salvar os cursos no arquivo, sempre quando fechar a tela de inserção
+        if len(self.listaCursos) != 0:
+            with open("Cursos.pickle", "wb") as arq:
+                pickle.dump(self.listaCursos, arq)
         self.insertView.destroy()
     #--------------------------------------------------------------------
 
@@ -175,16 +207,20 @@ class cursoControl():
 
     #GRADES--------------------------------------------------------------
     def insertGrade(self, event):
-        self.gradeView = view.insertGradeView(self)
+        self.gradeView = view.insertGradeView(self, self.listaC)
 
     def insertGradeHandler(self, event):
-        curso = self.gradeView.EnterCurso.get()
+        curso = self.gradeView.escolha.get()
         ano = self.gradeView.EnterAno.get()
         gradeInsert = model.Grade(ano, curso)
         if not self.listaGrades:
             #Fazer um if para ver se o curso existe
             self.listaGrades.append(gradeInsert)
             view.showMsg("Grade inserida!")
+
+    def closeGradeView(self, event):
+        
+        self.gradeView.destroy()
     #--------------------------------------------------------------------
     
 
