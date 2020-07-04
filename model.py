@@ -53,6 +53,22 @@ class Grade:
     def getCurso(self):
         return self.__curso
 
+#Classe Disciplina
+class Disciplinas:
+    def __init__(self, codigo, nome, cargaHoraria):
+        self.__codigo = codigo
+        self.__nome = nome
+        self.__cargaHoraria = cargaHoraria
+
+    def getCodigo(self):
+        return self.__codigo
+
+    def getNome(self):
+        return self.__nome
+
+    def getCargaHoraria(self):
+        return self.__cargaHoraria
+
 
 #Classe Histórico
 # class Historico:
