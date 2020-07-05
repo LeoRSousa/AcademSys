@@ -188,7 +188,7 @@ class insertCursoView(tk.Toplevel):
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
-        self.CloseButton = Button(self.Frm2, text = "Voltar", bg = "red", fg = "white")
+        self.CloseButton = Button(self.Frm2, text = "Salvar e Sair", bg = "red", fg = "white")
         self.CloseButton.pack(side = "left")
         self.CloseButton.bind("<Button>", ctrl.closeHandler)
 
@@ -267,7 +267,7 @@ class insertGradeView(tk.Toplevel):
         self.createButton.pack(side = "left")
         self.createButton.bind("<Button>", ctrl.insertGradeHandler)
 
-        self.closeButton = Button(self.Fr4, text = "Voltar")
+        self.closeButton = Button(self.Fr4, text = "Salvar e sair")
         self.closeButton.pack(side = "left")
         self.closeButton.bind("<Button>", ctrl.closeGradeView)
 

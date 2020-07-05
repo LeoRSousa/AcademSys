@@ -39,10 +39,10 @@ class Curso:
 
 #Classe Grade
 class Grade:
-    def __init__(self, ano, curso, discs):
+    def __init__(self, ano, curso, disciplinas):
         self.__ano = ano
         self.__curso = curso
-        self.__disciplinas = []
+        self.disciplinas = disciplinas
 
         # curso.addGrade(self)
 
@@ -53,7 +53,7 @@ class Grade:
         return self.__curso
 
     def getDiscs(self):
-        return self.__disciplinas
+        return self.disciplinas
 
 #Classe Disciplina
 class Disciplinas:

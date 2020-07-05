@@ -180,13 +180,24 @@ class cursoControl():
             nomesDiscs.append(disc.getNome())
         return nomesDiscs
 
+    def nomeDiscsGrade(self, curso, ano):
+        nomesDiscsG = ""
+        for grade in self.listaGrades:
+            if grade.getAno() == ano and grade.getCurso() == curso:
+                for dg in grade.getDiscs():
+                    nomesDiscsG += dg + "\n"
+                break
+            else:
+               nomesDiscsG += "" 
+        return nomesDiscsG
+
     #Pegar instancia de disciplina
-    def instanciaDisc(self, discCod):
-        ins = None
-        for disc in self.listaDisc:
-            if discCod == disc.getCodigo():
-                ins = disc
-        return ins
+    # def instanciaDisc(self, discCod):
+    #     ins = None
+    #     for disc in self.listaDisc:
+    #         if discCod == disc.getCodigo():
+    #             ins = disc
+    #     return ins
 
     #Pegas as grades do curso
     # def myGrades(self, nomeC):
@@ -233,19 +244,22 @@ class cursoControl():
         self.searchView = view.searchCursoView(self, self.listaC)
 
     def searchHandler(self, event):
+        #Cria ou carrega o arquivo contendo as grades
+        if not os.path.isfile("Grades.pickle"):
+            self.listaGrades = []
+        else:
+            with open("Grades.pickle", "rb") as arq:
+                self.listaGrades = pickle.load(arq)
         nome = self.searchView.escolha.get()
         print(nome)
         string = ""
         #como o curso vem pelo combobox, não é necessário verificar se ele existe
-        for cs in self.listaCursos:
-            if nome == cs.getNome():
-                string += "Curso: " + cs.getNome() + "\n"
-                for grd in self.listaGrades:
-                    if nome == grd.getCurso.getNome():
-                        string += "Grade " + grd.getAno() + "\n"
-                        for disc in grd.getDiscs():
-                            string += disc + "\n"
-                break
+        string += "Curso:\n" + nome + "\n"
+        for grd in self.listaGrades:
+            if nome == grd.getCurso():#.getNome():
+                string += "\nGrade " + grd.getAno() + "\n"
+                string += self.nomeDiscsGrade(nome, grd.getAno())
+
         #A busca acima monta uma string com o resultado e é passada pra uma messagebox
         view.showMsg(string)
 
@@ -285,12 +299,17 @@ class gradeControl():
         self.listaC = self.nomeCursos()
         self.listaD = self.nomeDiscs()
 
-        self.gradeView = view.insertGradeView(self, self.listaC, self.listaD)
-
         self.listaDiscGrade = []
 
-    def closeMainHandler(self, event):
-        self.view.destroy()
+        self.gradeView = view.insertGradeView(self, self.listaC, self.listaD)
+
+
+    # def closeMainHandler(self, event):
+    #     #Para salvar as grades no arquivo, sempre quando fechar a tela de inserção
+    #     if len(self.listaGrades) != 0:
+    #         with open("Grades.pickle", "wb") as arq:
+    #             pickle.dump(self.listaGrades, arq)
+    #     self.view.destroy()
 
     def nomeCursos(self):
         nomesCursos = []
@@ -305,36 +324,39 @@ class gradeControl():
         return nomesDiscs
 
     #Pegar instancia de disciplina
-    def instanciaDisc(self, discCod):
-        ins = None
-        for disc in self.listaDisc:
-            if discCod == disc.getCodigo():
-                ins = disc
-        return ins
+    # def instanciaDisc(self, discCod):
+    #     ins = None
+    #     for disc in self.listaDisc:
+    #         if discCod == disc.getCodigo():
+    #             ins = disc
+    #     return ins
 
     def insertGradeHandler(self, event):
-        self.listaDiscGrade = []
         curso = self.gradeView.escolha.get()
         ano = self.gradeView.EnterAno.get()
         gradeInsert = model.Grade(ano, curso, self.listaDiscGrade)
+        # for d in gradeInsert.getDiscs():
+        #     print(d + "\n")
         count = 0
         #Procura por elementos iguais antes da inserção
         if not self.listaGrades:
             self.listaGrades.append(gradeInsert)
-            view.showMsg("Grade inserida!")
+            view.showMsg("Grade inserida 0!")
         else:
             for grd in self.listaGrades:
-                if curso != grd.getCurso() and ano != grd.getAno():
+                if curso == grd.getCurso() and ano == grd.getAno():
                     count += 1
+                    break
             try:
-                if count < len(self.listaGrades):
+                if count > 0:
                     raise gradeExistente()
                 else:
-                    self.listaCursos.append(cursoInsert)
+                    self.listaGrades.append(gradeInsert)
                     print("Grade inserida!")
                     view.showMsg("Grade inserida!")
 
             except gradeExistente:
+                print(count)
                 print("Grade já existente!\nTente outra...")
                 view.showMsg("Grade já existente!\nTente outra...")
 
