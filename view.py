@@ -157,9 +157,9 @@ class cursoView(Toplevel):
         self.searchButton.pack(side = "top")
         self.searchButton.bind("<Button>", ctrl.searchCurso)
 
-        self.gradesButton = Button(self.Frm1, text = "Grades", height = 2, width = 25)
+        self.gradesButton = Button(self.Frm1, text = "Inserir Grades", height = 2, width = 25)
         self.gradesButton.pack(side = "top")
-        self.gradesButton.bind("<Button>", ctrl.insertGrade)
+        self.gradesButton.bind("<Button>", control.gradeControl)
 
         self.closeButton = Button(self.Frm1, text = "Voltar", height = 2, width = 25)
         self.closeButton.pack(side = "top")
@@ -205,10 +205,6 @@ class searchCursoView(tk.Toplevel):
         self.Fr1 = Frame(self)
         self.Fr2 = Frame(self)
 
-        # self.Lb1 = Label(self.Fr1, text = "Nome:")
-        # self.Lb1.pack(side = "left")
-        # self.EnterNome = Entry(self.Fr1, width = 20)
-        # self.EnterNome.pack()
         self.CursoLabel = Label(self.Fr1, text = "Curso")
         self.CursoLabel.pack(side = "left")
         self.escolha = StringVar()
@@ -234,7 +230,7 @@ class searchCursoView(tk.Toplevel):
 class insertGradeView(tk.Toplevel):
     def __init__(self, ctrl, listaCursos, listaDisc):
         tk.Toplevel.__init__(self)
-        self.geometry('250x200')
+        self.geometry('400x300')
         self.title("Grade")
 
         self.Fr1 = Frame(self)
@@ -254,8 +250,8 @@ class insertGradeView(tk.Toplevel):
         self.EnterAno = Entry(self.Fr2, width = 20)
         self.EnterAno.pack(side = "left")
 
-        self.AnoLabel = Label(self.Fr3, text = "Escolha Disciplina")
-        self.AnoLabel.pack(side = "left")
+        self.discLbl = Label(self.Fr3, text = "Escolha Disciplina")
+        self.discLbl.pack(side = "left")
         # self.EnterAno = Entry(self.Fr3, width = 20)
         # self.EnterAno.pack(side = "left")
         self.listbox = tk.Listbox(self.Fr3)
@@ -263,9 +259,13 @@ class insertGradeView(tk.Toplevel):
         for disc in listaDisc:
             self.listbox.insert(tk.END, disc)
 
-        self.insertButton = Button(self.Fr4, text = "Inserir")
+        self.insertButton = Button(self.Fr4, text = "Inserir Disciplina")
         self.insertButton.pack(side = "left")
-        self.insertButton.bind("<Button>", ctrl.insertGradeHandler)
+        self.insertButton.bind("<Button>", ctrl.insertDisciplina)
+
+        self.createButton = Button(self.Fr4, text = "Criar grade")
+        self.createButton.pack(side = "left")
+        self.createButton.bind("<Button>", ctrl.insertGradeHandler)
 
         self.closeButton = Button(self.Fr4, text = "Voltar")
         self.closeButton.pack(side = "left")
@@ -273,7 +273,8 @@ class insertGradeView(tk.Toplevel):
 
         self.Fr1.pack()
         self.Fr2.pack()
-        self.Fr3.pack()        
+        self.Fr3.pack()   
+        self.Fr4.pack()     
 
 
 class discView(tk.Toplevel):
@@ -290,7 +291,7 @@ class discView(tk.Toplevel):
 
         self.searchButton = tk.Button(self.Frm1, text = "Buscar", height = 2, width = 25)
         self.searchButton.pack(side = "top")
-        # self.searchButton.bind("<Button>", ctrl.searchDisc)
+        self.searchButton.bind("<Button>", ctrl.searchDisc)
 
         self.closeButton = tk.Button(self.Frm1, text = "Voltar", height = 2, width = 25)
         self.closeButton.pack(side = "top")
@@ -356,9 +357,17 @@ class searchDiscView(tk.Toplevel):
         self.sendButton.pack(side = "left")
         self.sendButton.bind("<Button>", ctrl.searchHandler)
 
-        self.closeButton = Button(self.Fr2, text = "Buscar")
+        self.searchAllButton = Button(self.Fr2, text = "Buscar Todas")
+        self.searchAllButton.pack(side = "left")
+        self.searchAllButton.bind("<Button>", ctrl.searchAllHandler)
+
+        self.closeButton = Button(self.Fr2, text = "Fechar")
         self.closeButton.pack(side = "left")
         self.closeButton.bind("<Button>", ctrl.closeSearchHandler)
+
+        self.Fr1.pack()
+        self.Fr2.pack()
+
 
 # class gradeView(Toplevel):
 

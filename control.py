@@ -12,6 +12,8 @@ class cursoExistente(Exception):
     pass
 class discExistente(Exception):
     pass
+class gradeExistente(Exception):
+    pass
 #FIM DAS EXCEPTION CLASS
 
 class mainControl():
@@ -159,6 +161,7 @@ class cursoControl():
         
         self.listaC = self.nomeCursos()
         self.listaD = self.nomeDiscs()
+        # self.listaG = self.myGrades()
 
         self.view = view.cursoView(self)
 
@@ -185,6 +188,10 @@ class cursoControl():
                 ins = disc
         return ins
 
+    #Pegas as grades do curso
+    # def myGrades(self, nomeC):
+    #     ins = None
+    
     #INSERÇÃO-----------------------------------------------------------
     def insertCurso(self, event):
         self.insertView = view.insertCursoView(self)
@@ -229,21 +236,17 @@ class cursoControl():
         nome = self.searchView.escolha.get()
         print(nome)
         string = ""
+        #como o curso vem pelo combobox, não é necessário verificar se ele existe
         for cs in self.listaCursos:
             if nome == cs.getNome():
-                string = "Curso: " + cs.getNome() + "\n"
+                string += "Curso: " + cs.getNome() + "\n"
+                for grd in self.listaGrades:
+                    if nome == grd.getCurso.getNome():
+                        string += "Grade " + grd.getAno() + "\n"
+                        for disc in grd.getDiscs():
+                            string += disc + "\n"
                 break
-        #Verificar se não está vazio antes, ou dá problema na busca
-        # if not self.listaCursos:
-        #     string = "Nenhum curso cadastrado!"
-        # else:
-        #     for cs in self.listaCursos:
-        #         if nome == cs.getNome():
-        #             string = "Curso: " + cs.getNome() + "\n"
-        #             break
-        #         else:
-        #             string = "Curso Não encontrado!"
-        #A busca acima monta uma string com o resiltado e é passada pra uma messagebox
+        #A busca acima monta uma string com o resultado e é passada pra uma messagebox
         view.showMsg(string)
 
     def verTodosHandler(self, event):
@@ -258,25 +261,96 @@ class cursoControl():
         self.searchView.destroy()
     #--------------------------------------------------------------------
 
-    #GRADES--------------------------------------------------------------
-    def insertGrade(self, event):
+class gradeControl():
+    def __init__(self, event):
+        #Cria ou carrega o arquivo contendo as grades
+        if not os.path.isfile("Grades.pickle"):
+            self.listaGrades = []
+        else:
+            with open("Grades.pickle", "rb") as arq:
+                self.listaGrades = pickle.load(arq)
+        #Cria ou carrega o arquivo contendo os cursos
+        if not os.path.isfile("Cursos.pickle"):
+            self.listaCursos = []
+        else:
+            with open("Cursos.pickle", "rb") as arq:
+                self.listaCursos = pickle.load(arq)
+        #Cria ou carrega o arquivo das disciplinas
+        if not os.path.isfile("Discs.pickle"):
+            self.listaDisc = []
+        else:
+            with open("Discs.pickle", "rb") as arq:
+                self.listaDisc = pickle.load(arq)
+        
+        self.listaC = self.nomeCursos()
+        self.listaD = self.nomeDiscs()
+
         self.gradeView = view.insertGradeView(self, self.listaC, self.listaD)
 
+        self.listaDiscGrade = []
+
+    def closeMainHandler(self, event):
+        self.view.destroy()
+
+    def nomeCursos(self):
+        nomesCursos = []
+        for curso in self.listaCursos:
+            nomesCursos.append(curso.getNome())
+        return nomesCursos
+
+    def nomeDiscs(self):
+        nomesDiscs = []
+        for disc in self.listaDisc:
+            nomesDiscs.append(disc.getNome())
+        return nomesDiscs
+
+    #Pegar instancia de disciplina
+    def instanciaDisc(self, discCod):
+        ins = None
+        for disc in self.listaDisc:
+            if discCod == disc.getCodigo():
+                ins = disc
+        return ins
+
     def insertGradeHandler(self, event):
+        self.listaDiscGrade = []
         curso = self.gradeView.escolha.get()
         ano = self.gradeView.EnterAno.get()
-        gradeInsert = model.Grade(ano, curso)
-        #FAZ A VALIDAÇÃO DE INSERÇÃO AQUI
+        gradeInsert = model.Grade(ano, curso, self.listaDiscGrade)
+        count = 0
+        #Procura por elementos iguais antes da inserção
         if not self.listaGrades:
             self.listaGrades.append(gradeInsert)
             view.showMsg("Grade inserida!")
+        else:
+            for grd in self.listaGrades:
+                if curso != grd.getCurso() and ano != grd.getAno():
+                    count += 1
+            try:
+                if count < len(self.listaGrades):
+                    raise gradeExistente()
+                else:
+                    self.listaCursos.append(cursoInsert)
+                    print("Grade inserida!")
+                    view.showMsg("Grade inserida!")
+
+            except gradeExistente:
+                print("Grade já existente!\nTente outra...")
+                view.showMsg("Grade já existente!\nTente outra...")
+
 
     def insertDisciplina(self, event):
         escolha = self.gradeView.listbox.get(tk.ACTIVE)
-        discIns = self.instanciaDisc(escolha)
+        # discIns = self.instanciaDisc(escolha)
+        self.listaDiscGrade.append(escolha)
+        view.showMsg("Disciplina inserida!")
+        self.gradeView.listbox.delete(tk.ACTIVE)
 
     def closeGradeView(self, event):
-        
+        #Para salvar as grades no arquivo, sempre quando fechar a tela de inserção
+        if len(self.listaGrades) != 0:
+            with open("Grades.pickle", "wb") as arq:
+                pickle.dump(self.listaGrades, arq)
         self.gradeView.destroy()
     #--------------------------------------------------------------------
     
@@ -307,7 +381,7 @@ class discControl():
         count = 0
         #Se não tiver nada na lista ele vai inserir, se tiver ele procura por elementos iguais
         if not self.listaDisc:
-            self.listaDisc.append(cursoInsert)
+            self.listaDisc.append(discInsert)
             view.showMsg("Disciplina inserida!")
         else:
             for disc in self.listaDisc:
@@ -317,7 +391,7 @@ class discControl():
                 if count < len(self.listaDisc):
                     raise discExistente()
                 else:
-                    self.listaDisc.append(cursoInsert)
+                    self.listaDisc.append(discInsert)
                     print("Disc inserida!")
                     view.showMsg("Disciplina inserida!")
 
@@ -326,6 +400,10 @@ class discControl():
                 view.showMsg("Disciplina já existente!\nTente outra...")
 
     def closeHandler(self, event):
+        #Para salvar as disciplinas no arquivo, sempre quando fechar a tela de inserção
+        if len(self.listaDisc) != 0:
+            with open("Discs.pickle", "wb") as arq:
+                pickle.dump(self.listaDisc, arq)
         self.insertView.destroy()
     #-------------------------------------------------------------------
 
@@ -335,21 +413,28 @@ class discControl():
 
     def searchHandler(self, event):
         cod = self.searchView.EnterCod.get()
+        print(cod)
         string = ""
         if not self.listaDisc:
             string = "Nenhuma Disciplina cadastrada!"
         else:
             for d in self.listaDisc:
                 if cod == d.getCodigo():
-                    string = "Código: " + d.getCodigo() + "\nNome: " + d.getNome() + "\nCarga Horária: " + d.getCargaHoraria
+                    string = "Código: " + d.getCodigo() + "\nNome: " + d.getNome() + "\nCarga Horária: " + d.getCargaHoraria()
                     break
                 else:
                     string = "Disciplina Não encontrada!"
         #A busca acima monta uma string com o resultado e é passada pra uma messagebox
         view.showMsg(string)
 
-        def closeSearchHandler(self, event):
-            self.searchView.destroy()
+    def searchAllHandler(self, event):
+        string = ""
+        for d in self.listaDisc:
+            string += d.getNome() + "(" + d.getCodigo() + ")\n\n"
+        view.showMsg(string)
+
+    def closeSearchHandler(self, event):
+        self.searchView.destroy()
     #-------------------------------------------------------------------
 
 

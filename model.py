@@ -20,7 +20,7 @@ class Curso:
         self.__nome = nome
 
         self.__alunos = [] #Criar uma lista de alunos
-        self.__grades = [] #Criar uma lista de grades
+        # self.__grades = [] #Criar uma lista de grades
 
     def getNome(self):
         return self.__nome
@@ -34,24 +34,26 @@ class Curso:
     def addAluno(self, aluno):
         self.__alunos.append(aluno)
 
-    def addGrade(self, grade):
-        self.__grades.append(grade)
+    # def addGrade(self, grade):
+    #     self.__grades.append(grade)
 
 #Classe Grade
 class Grade:
-    def __init__(self, ano, curso):
+    def __init__(self, ano, curso, discs):
         self.__ano = ano
         self.__curso = curso
-        
         self.__disciplinas = []
 
-        curso.addGrade(self)
+        # curso.addGrade(self)
 
     def getAno(self):
         return self.__ano
 
     def getCurso(self):
         return self.__curso
+
+    def getDiscs(self):
+        return self.__disciplinas
 
 #Classe Disciplina
 class Disciplinas:
