@@ -42,7 +42,7 @@ class alunoControl():
                 self.listaCursos = pickle.load(arq)
         
         #Lista com os nomes dos cursos
-        self.listaC = self.nomeCursos()
+        self.listaC = []
 
         #Cria a view para as operações do aluno
         self.view = view.alunoView(self)
@@ -68,6 +68,7 @@ class alunoControl():
     
     #INSERÇÃO-----------------------------------------------------------
     def insertAluno(self, event):
+        self.listaC = self.nomeCursos()
         self.insertView = view.insertAlunoView(self, self.listaC)
 
     def insertHandler(self, event):
@@ -159,9 +160,7 @@ class cursoControl():
             with open("Discs.pickle", "rb") as arq:
                 self.listaDisc = pickle.load(arq)
         
-        self.listaC = self.nomeCursos()
-        self.listaD = self.nomeDiscs()
-        # self.listaG = self.myGrades()
+        self.listaC = []
 
         self.view = view.cursoView(self)
 
@@ -190,18 +189,6 @@ class cursoControl():
             else:
                nomesDiscsG += "" 
         return nomesDiscsG
-
-    #Pegar instancia de disciplina
-    # def instanciaDisc(self, discCod):
-    #     ins = None
-    #     for disc in self.listaDisc:
-    #         if discCod == disc.getCodigo():
-    #             ins = disc
-    #     return ins
-
-    #Pegas as grades do curso
-    # def myGrades(self, nomeC):
-    #     ins = None
     
     #INSERÇÃO-----------------------------------------------------------
     def insertCurso(self, event):
@@ -241,6 +228,7 @@ class cursoControl():
 
     #BUSCA---------------------------------------------------------------
     def searchCurso(self, event):
+        self.listaC = self.nomeCursos()
         self.searchView = view.searchCursoView(self, self.listaC)
 
     def searchHandler(self, event):
@@ -304,13 +292,6 @@ class gradeControl():
         self.gradeView = view.insertGradeView(self, self.listaC, self.listaD)
 
 
-    # def closeMainHandler(self, event):
-    #     #Para salvar as grades no arquivo, sempre quando fechar a tela de inserção
-    #     if len(self.listaGrades) != 0:
-    #         with open("Grades.pickle", "wb") as arq:
-    #             pickle.dump(self.listaGrades, arq)
-    #     self.view.destroy()
-
     def nomeCursos(self):
         nomesCursos = []
         for curso in self.listaCursos:
@@ -322,14 +303,6 @@ class gradeControl():
         for disc in self.listaDisc:
             nomesDiscs.append(disc.getNome())
         return nomesDiscs
-
-    #Pegar instancia de disciplina
-    # def instanciaDisc(self, discCod):
-    #     ins = None
-    #     for disc in self.listaDisc:
-    #         if discCod == disc.getCodigo():
-    #             ins = disc
-    #     return ins
 
     def insertGradeHandler(self, event):
         curso = self.gradeView.escolha.get()
@@ -386,7 +359,6 @@ class discControl():
         else:
             with open("Discs.pickle", "rb") as arq:
                 self.listaDisc = pickle.load(arq)
-        
 
     def closeMainHandler(self, event):
         self.view.destroy()
@@ -488,8 +460,8 @@ class historicoControl():
             with open("Grades.pickle", "rb") as arq:
                 self.listaGrades = pickle.load(arq)
         
-        self.listaD = self.nomeDiscs()#Lista dos nomes das disciplinas cadastradas no sistema
-        # self.listaDA = []#Lista das disciplinas cursadas pelo aluno
+        #Lista dos nomes das disciplinas cadastradas no sistema
+        self.listaD = []
 
     def nomeDiscs(self):
         nomesDiscs = []
@@ -509,6 +481,7 @@ class historicoControl():
         self.view.destroy()
     
     def insertHistView(self, event):
+        self.listaD = self.nomeDiscs()
         self.insertView = view.insertHist(self, self.listaD)
 
     def insertHistHandler(self, event):

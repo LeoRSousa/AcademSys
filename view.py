@@ -97,7 +97,7 @@ class insertAlunoView(tk.Toplevel):
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
-        self.CloseButton = Button(self.Frm4, text = "Salvar e Sair", bg = "red", fg = "white")
+        self.CloseButton = Button(self.Frm4, text = "Salvar e Sair", bg = "green", fg = "white")
         self.CloseButton.pack(side = "left")
         self.CloseButton.bind("<Button>", ctrl.closeHandler)
 
@@ -183,7 +183,7 @@ class insertCursoView(tk.Toplevel):
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
-        self.CloseButton = Button(self.Frm2, text = "Salvar e Sair", bg = "red", fg = "white")
+        self.CloseButton = Button(self.Frm2, text = "Salvar e Sair", bg = "green", fg = "white")
         self.CloseButton.pack(side = "left")
         self.CloseButton.bind("<Button>", ctrl.closeHandler)
 
@@ -262,7 +262,7 @@ class insertGradeView(tk.Toplevel):
         self.createButton.pack(side = "left")
         self.createButton.bind("<Button>", ctrl.insertGradeHandler)
 
-        self.closeButton = Button(self.Fr4, text = "Salvar e sair")
+        self.closeButton = Button(self.Fr4, text = "Salvar e sair", bg = "green", fg = "white")
         self.closeButton.pack(side = "left")
         self.closeButton.bind("<Button>", ctrl.closeGradeView)
 
@@ -325,7 +325,7 @@ class insertDiscView(tk.Toplevel):
         self.sendButton.pack(side = "left")
         self.sendButton.bind("<Button>", ctrl.insertHandler)
 
-        self.closeButton = Button(self.Fr4, text = "Salvar e Sair")
+        self.closeButton = Button(self.Fr4, text = "Salvar e Sair", bg = "green", fg = "white")
         self.closeButton.pack(side = "left")
         self.closeButton.bind("<Button>", ctrl.closeHandler)
 
@@ -428,7 +428,7 @@ class insertHist(Toplevel):
         self.Bt1 = Button(self.Fr6, text = "Colocar disciplina no histórico")
         self.Bt1.pack(side = "left")
         self.Bt1.bind("<Button>", ctrl.insertHistHandler)
-        self.Bt2 = Button(self.Fr6, text = "Salvar e sair")
+        self.Bt2 = Button(self.Fr6, text = "Salvar e sair", bg = "green", fg = "white")
         self.Bt2.pack(side = "left")
         self.Bt2.bind("<Button>", ctrl.closeInsertHandler)
 
