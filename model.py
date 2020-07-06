@@ -73,17 +73,25 @@ class Disciplinas:
 
 
 #Classe Histórico
-# class Historico:
-#     def __init__(self, aluno):
-#         self.__aluno = aluno
+class Historico:
+    def __init__(self, aluno, ano, semestre, disc, nota):
+        self.__aluno = aluno
+        self.__ano = ano
+        self.__semestre = semestre
+        self.__disc = disc
+        self.__nota = nota
 
-#         self.__disciplinas = []
+    def getAluno(self):
+        return self.__aluno
 
-#     def getAluno(self):
-#         return self.__aluno
+    def getAno(self):
+        return self.__ano
+
+    def getSemestre(self):
+        return self.__semestre
     
-#     def getDisciplinas(self):
-#         return self.__disciplinas
+    def getDisc(self):
+        return self.__disc
 
-#     def addDisciplina(self, disciplina):
-#         self.__disciplinas.append(disciplina)
+    def getNota(self):
+        return self.__nota

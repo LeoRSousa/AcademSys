@@ -58,9 +58,13 @@ class alunoView(tk.Toplevel):
         self.Btn2.pack(side = "top")
         self.Btn2.bind("<Button>", ctrl.searchAluno)
 
+        self.Btn5 = tk.Button(self.Frm1, text = "Cadastrar/Atualizar Histórico", height = 2, width = 25)
+        self.Btn5.pack(side = "top")
+        self.Btn5.bind("<Button>", control.historicoControl)
+
         self.Btn3 = tk.Button(self.Frm1, text = "Ver Histórico", height = 2, width = 25)
         self.Btn3.pack(side = "top")
-        # self.Btn3.bind("<Button>", ctrl.)
+        self.Btn3.bind("<Button>", control.historicoControl.searchHandlerView)
 
         self.Btn4 = tk.Button(self.Frm1, text = "Voltar", height = 2, width = 25)
         self.Btn4.pack(side = "top")
@@ -368,7 +372,79 @@ class searchDiscView(tk.Toplevel):
         self.Fr1.pack()
         self.Fr2.pack()
 
+class historicoView(Toplevel):
+    def __init__(self, ctrl, listaD):
+        tk.Toplevel.__init__(self)
+        self.geometry('400x310')
+        self.title("Histórico")
 
-# class gradeView(Toplevel):
+        self.Fr1 = Frame(self)
+        self.Fr2 = Frame(self)
+        self.Fr3 = Frame(self)
+        self.Fr4 = Frame(self)
+        self.Fr5 = Frame(self)
+        self.Fr6 = Frame(self)
 
-# class historicoView(Toplevel):
+        self.Lb1 = Label(self.Fr1, text = "Matrícula")
+        self.Lb1.pack(side = "left")
+        self.EnterMat = Entry(self.Fr1, width = 30)
+        self.EnterMat.pack(side = "right")
+
+        self.Lb2 = Label(self.Fr2, text = "Disciplina")
+        self.Lb2.pack(side = "left")
+        self.listbox = tk.Listbox(self.Fr2, width = 30)
+        self.listbox.pack(side="right")
+        for disc in listaD:
+            self.listbox.insert(tk.END, disc)
+
+        self.Lb3 = Label(self.Fr3, text = "Ano cursado")
+        self.Lb3.pack(side = "left")
+        self.EnterAno = Entry(self.Fr3, width = 30)
+        self.EnterAno.pack(side = "right")
+
+        self.Lb4 = Label(self.Fr4, text = "Semestre cursado")
+        self.Lb4.pack(side = "left")
+        self.escolha = StringVar()
+        self.combobox = ttk.Combobox(self.Fr4, width = 30 , textvariable = self.escolha)
+        self.combobox.pack(side="right")
+        self.combobox['values'] = [1, 2]
+
+        self.Lb5 = Label(self.Fr5, text = "Nota final")
+        self.Lb5.pack(side = "left")
+        self.EnterNota = Entry(self.Fr5, width = 30)
+        self.EnterNota.pack(side = "right")
+
+        self.Bt1 = Button(self.Fr6, text = "Colocar disciplina no histórico")
+        self.Bt1.pack(side = "left")
+        self.Bt1.bind("<Button>", ctrl.insertHistHandler)
+        self.Bt2 = Button(self.Fr6, text = "Salvar e sair")
+        self.Bt2.pack(side = "left")
+        self.Bt2.bind("<Button>", ctrl.closeHandler)
+
+        self.Fr1.pack()
+        self.Fr2.pack()
+        self.Fr3.pack()
+        self.Fr4.pack()
+        self.Fr5.pack()
+        self.Fr6.pack()
+
+class searchHist(Toplevel):
+    def __init__(self, ctrl):
+        tk.Toplevel.__init__(self)
+        self.geometry('200x200')
+        self.title("Histórico")
+
+        self.Fr1 = Frame(self)
+        self.Fr2 = Frame(self)
+
+        self.Lb1 = Label(self.Fr1, text = "Matrícula: ")
+        self.Lb1.pack(side = "left")
+        self.EnterMat = Entry(self.Fr1, width = 20)
+        self.EnterMat.pack(side = "left")
+
+        self.SearchButton = Button(self.Fr2, text = "Buscar")
+        self.SearchButton.pack(side = "top")
+        self.SearchButton.bind("<Button>", ctrl.searchHandler)
+
+        self.Fr1.pack()
+        self.Fr2.pack()
