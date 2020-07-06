@@ -462,6 +462,7 @@ class discControl():
 
 class historicoControl():
     def __init__(self, event):
+        self.view = view.historicoView(self)
         #Cria ou carrega o arquivo dos históricos
         if not os.path.isfile("Hist.pickle"):
             self.listaHist = []
@@ -482,7 +483,6 @@ class historicoControl():
                 self.listaAlunos = pickle.load(arq)
         
         self.listaD = self.nomeDiscs()#Lista dos nomes das disciplinas cadastradas no sistema
-        self.view = view.historicoView(self, self.listaD)
         # self.listaDA = []#Lista das disciplinas cursadas pelo aluno
 
     def nomeDiscs(self):
@@ -491,12 +491,18 @@ class historicoControl():
             nomesDiscs.append(disc.getNome())
         return nomesDiscs
 
+    def closeView(self, event):
+        self.view.destroy()
+    
+    def insertHistView(self, event):
+        self.insertView = view.insertHist(self, self.listaD)
+
     def insertHistHandler(self, event):
-        mat = self.view.EnterMat.get()
-        disc = self.view.listbox.get(tk.ACTIVE)
-        ano = self.view.EnterAno.get()
-        semestre = self.view.escolha.get()
-        nota = float(self.view.EnterNota)
+        mat = self.insertView.EnterMat.get()
+        disc = self.insertView.listbox.get(tk.ACTIVE)
+        ano = self.insertView.EnterAno.get()
+        semestre = self.insertView.escolha.get()
+        nota = self.insertView.EnterNota.get()
         histIns = model.Historico(mat, ano, semestre, disc, nota)
         count = 0
         if not self.listaHist:
@@ -506,7 +512,7 @@ class historicoControl():
             for hist in self.listaHist:
                 if mat == hist.getAluno() and disc == hist.getDisc():
                     count = 0
-                    if hist.getNota() < 6:
+                    if float(hist.getNota()) < 6:
                         self.listaHist.append(histIns)
                         view.showMsg("Disciplina inserida no histórico!")
                         break
@@ -519,23 +525,41 @@ class historicoControl():
                 self.listaHist.append(histIns)
                 view.showMsg("Disciplina inserida no histórico!")
 
-    def closeHandler(self, event):
+    def closeInsertHandler(self, event):
         if len(self.listaHist) != 0:
             with open("Hist.pickle", "wb") as arq:
                 pickle.dump(self.listaHist, arq)
-        self.view.destroy()
+        self.insertView.destroy()
 
     def searchHandlerView(self, event):
-        self.searchHist = view.searchHist(self)
+        self.searchView = view.searchHist(self)
 
     def searchHandler(self, event):
         string = ""
-        mat = self.searchHist.EnterMat.get()
+        mat = self.searchView.EnterMat.get()
+        lMA = []
+        count = 0
         for al in self.listaAlunos:
-            if mat == al.getNroMatric:
+            if mat == al.getNroMatric():
                 string += al.getNome() + "\n"
                 break
         for hist in self.listaHist:
             if mat == hist.getAluno():
-                #E se eu pegar as instancias de histórico do aluno e jogar numa lista? Aí eu conseguiria 
-                # ordenar por ano. gr, vou dormir!
+                lMA.append(hist)
+            else: #Se não for aquele aluno
+                count += 1
+        if count < len(self.listaHist): #Se há um histórico para aquela matricula
+            lMA2 = sorted(lMA, key = model.Historico.getAno)
+            for alD in lMA2:
+                string += alD.getAno() + "/" + alD.getSemestre() + " -- " + alD.getDisc() + ": \nNota: " + alD.getNota()
+                if float(alD.getNota()) < 6:
+                    string += " - Reprovado\n"
+                else:
+                    string += " - Aprovado\n"
+            #Calcular CH
+        else: #Se não há um histórico para aquela matricula
+            string += "Sem histórico encontrado para o(a) mesmo(a)"
+        view.showMsg(string)
+
+    def closeSearchHandler(self, event):
+        self.searchView.destroy()

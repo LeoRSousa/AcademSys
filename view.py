@@ -58,13 +58,9 @@ class alunoView(tk.Toplevel):
         self.Btn2.pack(side = "top")
         self.Btn2.bind("<Button>", ctrl.searchAluno)
 
-        self.Btn5 = tk.Button(self.Frm1, text = "Cadastrar/Atualizar Histórico", height = 2, width = 25)
-        self.Btn5.pack(side = "top")
-        self.Btn5.bind("<Button>", control.historicoControl)
-
-        self.Btn3 = tk.Button(self.Frm1, text = "Ver Histórico", height = 2, width = 25)
+        self.Btn3 = tk.Button(self.Frm1, text = "Histórico", height = 2, width = 25)
         self.Btn3.pack(side = "top")
-        self.Btn3.bind("<Button>", control.historicoControl.searchHandlerView)
+        self.Btn3.bind("<Button>", control.historicoControl)
 
         self.Btn4 = tk.Button(self.Frm1, text = "Voltar", height = 2, width = 25)
         self.Btn4.pack(side = "top")
@@ -373,6 +369,26 @@ class searchDiscView(tk.Toplevel):
         self.Fr2.pack()
 
 class historicoView(Toplevel):
+    def __init__(self, ctrl):
+        tk.Toplevel.__init__(self)
+        self.geometry('250x250')
+        self.title("Histórico")
+
+        self.Fr1 = Frame(self)
+
+        self.Bt1 = Button(self.Fr1, text = "Cadastrar/Atualizar Histórico", height = 2, width = 25)
+        self.Bt1.pack(side = "top")
+        self.Bt1.bind("<Button>", ctrl.insertHistView)
+        self.Bt2 = Button(self.Fr1, text = "Buscar Histórico", height = 2, width = 25)
+        self.Bt2.pack(side = "top")
+        self.Bt2.bind("<Button>", ctrl.searchHandlerView)
+        self.Bt3 = Button(self.Fr1, text = "Voltar")
+        self.Bt3.pack(side = "top")
+        self.Bt3.bind("<Button>", ctrl.closeView)
+
+        self.Fr1.pack()
+
+class insertHist(Toplevel):
     def __init__(self, ctrl, listaD):
         tk.Toplevel.__init__(self)
         self.geometry('400x310')
@@ -419,7 +435,7 @@ class historicoView(Toplevel):
         self.Bt1.bind("<Button>", ctrl.insertHistHandler)
         self.Bt2 = Button(self.Fr6, text = "Salvar e sair")
         self.Bt2.pack(side = "left")
-        self.Bt2.bind("<Button>", ctrl.closeHandler)
+        self.Bt2.bind("<Button>", ctrl.closeInsertHandler)
 
         self.Fr1.pack()
         self.Fr2.pack()
@@ -443,8 +459,12 @@ class searchHist(Toplevel):
         self.EnterMat.pack(side = "left")
 
         self.SearchButton = Button(self.Fr2, text = "Buscar")
-        self.SearchButton.pack(side = "top")
+        self.SearchButton.pack(side = "left")
         self.SearchButton.bind("<Button>", ctrl.searchHandler)
+
+        self.closeButton = Button(self.Fr2, text = "Sair")
+        self.closeButton.pack(side = "left")
+        self.closeButton.bind("<Button>", ctrl.closeSearchHandler)
 
         self.Fr1.pack()
         self.Fr2.pack()
