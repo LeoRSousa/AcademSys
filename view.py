@@ -13,11 +13,6 @@ class mainView():
     def __init__(self, root):
         self.root = root
         self.root.geometry('300x300')
-        # self.root.attributes('-fullscreen',True)#Fullscreen total, sem o X
-        
-        #Maximiza a tela, mas eu quero isso?
-        # m = self.root.maxsize()
-        # self.root.geometry('{}x{}+0+0'.format(*m))
 
         self.Frm1 = tk.Frame(self.root)
         self.Frm2 = tk.Frame(self.root)

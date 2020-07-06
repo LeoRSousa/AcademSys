@@ -1,6 +1,9 @@
 #Não upar a pasta __pycache__
 __pycache__/
 
+#Não upar a pasta de imagens, por enquanto!!!
+png/
+
 #Arquivo de testes
 a.py
 

@@ -481,6 +481,12 @@ class historicoControl():
         else:
             with open("Alunos.pickle", "rb") as arq:
                 self.listaAlunos = pickle.load(arq)
+        #Cria ou carrega o arquivo contendo as grades
+        if not os.path.isfile("Grades.pickle"):
+            self.listaGrades = []
+        else:
+            with open("Grades.pickle", "rb") as arq:
+                self.listaGrades = pickle.load(arq)
         
         self.listaD = self.nomeDiscs()#Lista dos nomes das disciplinas cadastradas no sistema
         # self.listaDA = []#Lista das disciplinas cursadas pelo aluno
@@ -491,6 +497,14 @@ class historicoControl():
             nomesDiscs.append(disc.getNome())
         return nomesDiscs
 
+    #Pegar instancia de disciplina
+    def instanciaDisc(self, discNome):
+        ins = None
+        for disc in self.listaDisc:
+            if discNome == disc.getNome():
+                ins = disc
+        return ins
+
     def closeView(self, event):
         self.view.destroy()
     
@@ -500,17 +514,18 @@ class historicoControl():
     def insertHistHandler(self, event):
         mat = self.insertView.EnterMat.get()
         disc = self.insertView.listbox.get(tk.ACTIVE)
+        discIns = self.instanciaDisc(disc)
         ano = self.insertView.EnterAno.get()
         semestre = self.insertView.escolha.get()
         nota = self.insertView.EnterNota.get()
-        histIns = model.Historico(mat, ano, semestre, disc, nota)
+        histIns = model.Historico(mat, ano, semestre, discIns, nota)
         count = 0
         if not self.listaHist:
             self.listaHist.append(histIns)
             view.showMsg("Disciplina inserida no histórico")
         else:
             for hist in self.listaHist:
-                if mat == hist.getAluno() and disc == hist.getDisc():
+                if mat == hist.getAluno() and discIns.getNome() == hist.getDisc().getNome():
                     count = 0
                     if float(hist.getNota()) < 6:
                         self.listaHist.append(histIns)
@@ -537,28 +552,48 @@ class historicoControl():
     def searchHandler(self, event):
         string = ""
         mat = self.searchView.EnterMat.get()
+        insAluno = None
         lMA = []
         count = 0
+        discObr = 0
+        discOpt = 0
+        CHTotal = 0
         for al in self.listaAlunos:
             if mat == al.getNroMatric():
+                insAluno = al
                 string += al.getNome() + "\n"
                 break
         for hist in self.listaHist:
             if mat == hist.getAluno():
-                lMA.append(hist)
+                lMA.append(hist)#Pega as disciplinas daquele aluno
             else: #Se não for aquele aluno
                 count += 1
         if count < len(self.listaHist): #Se há um histórico para aquela matricula
             lMA2 = sorted(lMA, key = model.Historico.getAno)
             for alD in lMA2:
-                string += alD.getAno() + "/" + alD.getSemestre() + " -- " + alD.getDisc() + ": \nNota: " + alD.getNota()
+                string += alD.getAno() + "/" + alD.getSemestre() + " -- " + alD.getDisc().getNome() + ": \nNota: " + alD.getNota()
                 if float(alD.getNota()) < 6:
                     string += " - Reprovado\n"
                 else:
-                    string += " - Aprovado\n"
-            #Calcular CH
+                    string += " - Aprovado\n\n"
+            #Pega o nome do curso do aluno
+            curso = al.getCurso().getNome()
+            #Pega as grades do curso do aluno
+            grdCurso = []
+            for grd in self.listaGrades:
+                if curso == grd.getCurso():
+                    grdCurso.append(grd.getDiscs())
+            #Busca se a disciplina cursada é obrigatória ou optativa
+            for alD in lMA2:
+                for d in grdCurso:
+                    if alD.getDisc().getNome() in d:
+                        discObr += int(alD.getDisc().getCargaHoraria())
+                CHTotal += int(alD.getDisc().getCargaHoraria())
+            discOpt = CHTotal - discObr
+            discObr = CHTotal - discOpt
         else: #Se não há um histórico para aquela matricula
             string += "Sem histórico encontrado para o(a) mesmo(a)"
+        string += "\nCH Obrigatória: {}h".format(discObr) + "\nCH Optativa: {}h\n".format(discOpt)
         view.showMsg(string)
 
     def closeSearchHandler(self, event):
