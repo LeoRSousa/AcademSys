@@ -88,7 +88,7 @@ class insertAlunoView(tk.Toplevel):
         self.combobox.pack(side="left")
         self.combobox['values'] = cursos
 
-        self.EnterButton = Button(self.Frm4, text = "Enviar")
+        self.EnterButton = Button(self.Frm4, text = "Inserir", bg = "blue", fg = "white")
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
@@ -172,7 +172,7 @@ class insertCursoView(tk.Toplevel):
         self.EnterName = Entry(self.Frm1, width = 20)
         self.EnterName.pack(side = "right")
 
-        self.EnterButton = Button(self.Frm2, text = "Inserir")
+        self.EnterButton = Button(self.Frm2, text = "Inserir", bg = "blue", fg = "white")
         self.EnterButton.pack(side = "left")
         self.EnterButton.bind("<Button>", ctrl.insertHandler)
 
@@ -245,11 +245,11 @@ class insertGradeView(tk.Toplevel):
         for disc in listaDisc:
             self.listbox.insert(tk.END, disc)
 
-        self.insertButton = Button(self.Fr4, text = "Inserir Disciplina")
+        self.insertButton = Button(self.Fr4, text = "Inserir Disciplina", bg = "blue", fg = "white")
         self.insertButton.pack(side = "left")
         self.insertButton.bind("<Button>", ctrl.insertDisciplina)
 
-        self.createButton = Button(self.Fr4, text = "Criar grade")
+        self.createButton = Button(self.Fr4, text = "Criar grade", bg = "blue", fg = "white")
         self.createButton.pack(side = "left")
         self.createButton.bind("<Button>", ctrl.insertGradeHandler)
 
@@ -312,7 +312,7 @@ class insertDiscView(tk.Toplevel):
         self.EnterCH = Entry(self.Fr3, width = 20)
         self.EnterCH.pack(side = "right")
 
-        self.sendButton = Button(self.Fr4, text = "Enviar")
+        self.sendButton = Button(self.Fr4, text = "Inserir", bg = "blue", fg = "white")
         self.sendButton.pack(side = "left")
         self.sendButton.bind("<Button>", ctrl.insertHandler)
 
@@ -377,7 +377,7 @@ class historicoView(Toplevel):
 class insertHist(Toplevel):
     def __init__(self, ctrl, listaD):
         tk.Toplevel.__init__(self)
-        self.geometry('400x310')
+        self.geometry('400x400')
         self.title("Histórico")
 
         self.Fr1 = Frame(self)
@@ -401,22 +401,22 @@ class insertHist(Toplevel):
 
         self.Lb3 = Label(self.Fr3, text = "Ano cursado")
         self.Lb3.pack(side = "left")
-        self.EnterAno = Entry(self.Fr3, width = 30)
+        self.EnterAno = Entry(self.Fr3, width = 25)
         self.EnterAno.pack(side = "right")
 
         self.Lb4 = Label(self.Fr4, text = "Semestre cursado")
         self.Lb4.pack(side = "left")
         self.escolha = StringVar()
-        self.combobox = ttk.Combobox(self.Fr4, width = 30 , textvariable = self.escolha)
+        self.combobox = ttk.Combobox(self.Fr4, width = 25 , textvariable = self.escolha)
         self.combobox.pack(side="right")
         self.combobox['values'] = [1, 2]
 
-        self.Lb5 = Label(self.Fr5, text = "Nota final")
+        self.Lb5 = Label(self.Fr5, text = "Nota final\n(Usar . (ponto) para\nnúmeros decimais)")
         self.Lb5.pack(side = "left")
-        self.EnterNota = Entry(self.Fr5, width = 30)
+        self.EnterNota = Entry(self.Fr5, width = 25)
         self.EnterNota.pack(side = "right")
 
-        self.Bt1 = Button(self.Fr6, text = "Colocar disciplina no histórico")
+        self.Bt1 = Button(self.Fr6, text = "Colocar disciplina no histórico", bg = "blue", fg = "white")
         self.Bt1.pack(side = "left")
         self.Bt1.bind("<Button>", ctrl.insertHistHandler)
         self.Bt2 = Button(self.Fr6, text = "Salvar e sair", bg = "green", fg = "white")
