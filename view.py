@@ -41,9 +41,6 @@ class alunoView(tk.Toplevel):
         self.title("Alunos")
 
         self.Frm1 = tk.Frame(self)
-        # self.Frm2 = tk.Frame(self)
-        # self.Frm3 = tk.Frame(self)
-        # self.Frm4 = tk.Frame(self)
 
         self.Btn1 = tk.Button(self.Frm1, text = "Inserir", height = 2, width = 25)
         self.Btn1.pack(side = "top")
@@ -62,8 +59,6 @@ class alunoView(tk.Toplevel):
         self.Btn4.bind("<Button>", ctrl.closeMainHandler)
 
         self.Frm1.pack(fill=X)
-        # self.Frm2.pack(fill=X)
-        # self.Frm3.pack(fill=X)
 
 class insertAlunoView(tk.Toplevel):
     def __init__(self, ctrl, cursos):
@@ -161,8 +156,6 @@ class cursoView(Toplevel):
         self.closeButton.bind("<Button>", ctrl.closeMainHandler)
 
         self.Frm1.pack()
-        # self.Frm2.pack()
-        # self.Frm3.pack()
         
 
 class insertCursoView(tk.Toplevel):
@@ -247,8 +240,6 @@ class insertGradeView(tk.Toplevel):
 
         self.discLbl = Label(self.Fr3, text = "Escolha Disciplina")
         self.discLbl.pack(side = "left")
-        # self.EnterAno = Entry(self.Fr3, width = 20)
-        # self.EnterAno.pack(side = "left")
         self.listbox = tk.Listbox(self.Fr3)
         self.listbox.pack(side="left")
         for disc in listaDisc:

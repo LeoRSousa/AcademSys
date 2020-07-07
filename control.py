@@ -27,6 +27,7 @@ class mainControl():
 
 
 class alunoControl():
+    #CONSTRUTOR---------------------------------------------------------
     def __init__(self, event):
         #Cria ou carrega o arquivo contendo os alunos
         if not os.path.isfile("Alunos.pickle"):
@@ -46,6 +47,7 @@ class alunoControl():
 
         #Cria a view para as operações do aluno
         self.view = view.alunoView(self)
+    #-------------------------------------------------------------------
 
     #Para ver os cursos existentes
     def nomeCursos(self):
@@ -81,6 +83,7 @@ class alunoControl():
         #Se não tiver nada na lista ele vai inserir
         if not self.listaAlunos:
             self.listaAlunos.append(alunoInsert)
+            self.clear()
             mensagemIns = view.showMsg("Aluno inserido!")
             #Se já puver aulguma coisa na lista
         else:
@@ -90,17 +93,15 @@ class alunoControl():
                 if alunoInsert.getNroMatric() != mat.getNroMatric():
                     count += 1
                     #Se o contador for menor que os itens na lista, então há um elemento igual
-            # print("Contador: {}".format(count))
             try:
                 if count < len(self.listaAlunos):
                     raise alunoExistente()
                 else:
                     self.listaAlunos.append(alunoInsert)
-                    print("Aluno inserido!")
+                    self.clear()
                     mensagemIns = view.showMsg("Aluno inserido!")
 
             except alunoExistente:
-                print("Matrícula já existente!\nTente outra...")#Cade a mensagem pro usuário?
                 mensagemAlExst = view.showMsg("Matrícula já existente!\nTente outra...")
 
     #Mata a janela de inserção Alunos
@@ -110,6 +111,10 @@ class alunoControl():
             with open("Alunos.pickle", "wb") as arq:
                 pickle.dump(self.listaAlunos, arq)
         self.insertView.destroy()
+
+    def clear(self):
+        self.insertView.EnterMat.delete(0, len(self.insertView.EnterMat.get()))
+        self.insertView.EnterName.delete(0, len(self.insertView.EnterName.get())) 
     #--------------------------------------------------------------------
 
     #BUSCA---------------------------------------------------------------
@@ -118,7 +123,6 @@ class alunoControl():
         
     def searchHandler(self, event):
         mat = self.searchView.EnterMat.get()
-        print(mat)
         string = None
         #Verificar se não está vazio antes, ou dá problema na busca
         if not self.listaAlunos:
@@ -140,6 +144,7 @@ class alunoControl():
 
 
 class cursoControl():
+    #CONSTRUTOR---------------------------------------------------------
     def __init__(self, event):
         #Cria ou carrega o arquivo contendo os cursos
         if not os.path.isfile("Cursos.pickle"):
@@ -163,6 +168,7 @@ class cursoControl():
         self.listaC = []
 
         self.view = view.cursoView(self)
+    #-------------------------------------------------------------------
 
     def closeMainHandler(self, event):
         self.view.destroy()
@@ -201,6 +207,7 @@ class cursoControl():
         #Se não tiver nada na lista ele vai inserir, se tiver ele procura por elementos iguais
         if not self.listaCursos:
             self.listaCursos.append(cursoInsert)
+            self.clear()
             view.showMsg("Curso inserido!")
         else:
             for curso in self.listaCursos:
@@ -210,12 +217,11 @@ class cursoControl():
                 if count < len(self.listaCursos):
                     raise cursoExistente()
                 else:
-                    print("Curso inserido!")
                     self.listaCursos.append(cursoInsert)
+                    self.clear()
                     view.showMsg("Curso inserido!")
 
             except cursoExistente:
-                print("Curso já existente!\nTente outra...")
                 view.showMsg("Curso já existente!\nTente outro...")
 
     def closeHandler(self, event):
@@ -224,6 +230,9 @@ class cursoControl():
             with open("Cursos.pickle", "wb") as arq:
                 pickle.dump(self.listaCursos, arq)
         self.insertView.destroy()
+
+    def clear(self):
+        self.insertView.EnterName.delete(0, len(self.insertView.EnterName.get()))
     #--------------------------------------------------------------------
 
     #BUSCA---------------------------------------------------------------
@@ -239,7 +248,6 @@ class cursoControl():
             with open("Grades.pickle", "rb") as arq:
                 self.listaGrades = pickle.load(arq)
         nome = self.searchView.escolha.get()
-        print(nome)
         string = ""
         #como o curso vem pelo combobox, não é necessário verificar se ele existe
         string += "Curso:\n" + nome + "\n"
@@ -263,7 +271,9 @@ class cursoControl():
         self.searchView.destroy()
     #--------------------------------------------------------------------
 
+
 class gradeControl():
+    #CONSTRUTOR---------------------------------------------------------
     def __init__(self, event):
         #Cria ou carrega o arquivo contendo as grades
         if not os.path.isfile("Grades.pickle"):
@@ -290,7 +300,7 @@ class gradeControl():
         self.listaDiscGrade = []
 
         self.gradeView = view.insertGradeView(self, self.listaC, self.listaD)
-
+    #-------------------------------------------------------------------
 
     def nomeCursos(self):
         nomesCursos = []
@@ -304,16 +314,16 @@ class gradeControl():
             nomesDiscs.append(disc.getNome())
         return nomesDiscs
 
+    #INSERÇÃO-----------------------------------------------------------
     def insertGradeHandler(self, event):
         curso = self.gradeView.escolha.get()
         ano = self.gradeView.EnterAno.get()
         gradeInsert = model.Grade(ano, curso, self.listaDiscGrade)
-        # for d in gradeInsert.getDiscs():
-        #     print(d + "\n")
         count = 0
         #Procura por elementos iguais antes da inserção
         if not self.listaGrades:
             self.listaGrades.append(gradeInsert)
+            self.clear()
             view.showMsg("Grade inserida 0!")
         else:
             for grd in self.listaGrades:
@@ -325,18 +335,15 @@ class gradeControl():
                     raise gradeExistente()
                 else:
                     self.listaGrades.append(gradeInsert)
-                    print("Grade inserida!")
+                    self.clear()
                     view.showMsg("Grade inserida!")
 
             except gradeExistente:
-                print(count)
-                print("Grade já existente!\nTente outra...")
                 view.showMsg("Grade já existente!\nTente outra...")
 
 
     def insertDisciplina(self, event):
         escolha = self.gradeView.listbox.get(tk.ACTIVE)
-        # discIns = self.instanciaDisc(escolha)
         self.listaDiscGrade.append(escolha)
         view.showMsg("Disciplina inserida!")
         self.gradeView.listbox.delete(tk.ACTIVE)
@@ -347,10 +354,14 @@ class gradeControl():
             with open("Grades.pickle", "wb") as arq:
                 pickle.dump(self.listaGrades, arq)
         self.gradeView.destroy()
+
+    def clear(self):
+        self.gradeView.EnterAno.delete(0, len(self.gradeView.EnterAno.get()))
     #--------------------------------------------------------------------
     
 
 class discControl():
+    #CONSTRUTOR---------------------------------------------------------
     def __init__(self, event):
         self.view = view.discView(self)
         #Cria ou carrega o arquivo das disciplinas
@@ -362,6 +373,7 @@ class discControl():
 
     def closeMainHandler(self, event):
         self.view.destroy()
+    #-------------------------------------------------------------------
 
     #INSERÇÃO-----------------------------------------------------------
     def insertDisc(self, event):
@@ -376,6 +388,7 @@ class discControl():
         #Se não tiver nada na lista ele vai inserir, se tiver ele procura por elementos iguais
         if not self.listaDisc:
             self.listaDisc.append(discInsert)
+            self.clear()
             view.showMsg("Disciplina inserida!")
         else:
             for disc in self.listaDisc:
@@ -386,11 +399,10 @@ class discControl():
                     raise discExistente()
                 else:
                     self.listaDisc.append(discInsert)
-                    print("Disc inserida!")
+                    self.clear()
                     view.showMsg("Disciplina inserida!")
 
             except discExistente:
-                print("Disc já existente!\nTente outra...")
                 view.showMsg("Disciplina já existente!\nTente outra...")
 
     def closeHandler(self, event):
@@ -399,6 +411,11 @@ class discControl():
             with open("Discs.pickle", "wb") as arq:
                 pickle.dump(self.listaDisc, arq)
         self.insertView.destroy()
+
+    def clear(self):
+        self.insertView.EnterName.delete(0, len(self.insertView.EnterName.get()))
+        self.insertView.EnterCod.delete(0, len(self.insertView.EnterCod.get()))
+        self.insertView.EnterCH.delete(0, len(self.insertView.EnterCH.get()))
     #-------------------------------------------------------------------
 
     #BUSCA--------------------------------------------------------------
@@ -407,7 +424,6 @@ class discControl():
 
     def searchHandler(self, event):
         cod = self.searchView.EnterCod.get()
-        print(cod)
         string = ""
         if not self.listaDisc:
             string = "Nenhuma Disciplina cadastrada!"
@@ -433,6 +449,7 @@ class discControl():
 
 
 class historicoControl():
+    #CONSTRUTOR---------------------------------------------------------
     def __init__(self, event):
         self.view = view.historicoView(self)
         #Cria ou carrega o arquivo dos históricos
@@ -462,6 +479,7 @@ class historicoControl():
         
         #Lista dos nomes das disciplinas cadastradas no sistema
         self.listaD = []
+    #-------------------------------------------------------------------
 
     def nomeDiscs(self):
         nomesDiscs = []
@@ -479,7 +497,8 @@ class historicoControl():
 
     def closeView(self, event):
         self.view.destroy()
-    
+
+    #INSERÇÃO-----------------------------------------------------------
     def insertHistView(self, event):
         self.listaD = self.nomeDiscs()
         self.insertView = view.insertHist(self, self.listaD)
@@ -495,6 +514,7 @@ class historicoControl():
         count = 0
         if not self.listaHist:
             self.listaHist.append(histIns)
+            self.clear()
             view.showMsg("Disciplina inserida no histórico")
         else:
             for hist in self.listaHist:
@@ -502,9 +522,11 @@ class historicoControl():
                     count = 0
                     if float(hist.getNota()) < 6:
                         self.listaHist.append(histIns)
+                        self.clear()
                         view.showMsg("Disciplina inserida no histórico!")
                         break
                     else:
+                        self.clear()
                         view.showMsg("Disciplina já cursada com aprovação...\nNão é possível refaze-la!")
                         break
                 else:
@@ -519,6 +541,13 @@ class historicoControl():
                 pickle.dump(self.listaHist, arq)
         self.insertView.destroy()
 
+    def clear(self):
+        self.insertView.EnterMat.delete(0, len(self.insertView.EnterMat.get()))
+        self.insertView.EnterAno.delete(0, len(self.insertView.EnterAno.get()))
+        self.insertView.EnterNota.delete(0, len(self.insertView.EnterNota.get()))
+    #-------------------------------------------------------------------
+
+    #BUSCA--------------------------------------------------------------
     def searchHandlerView(self, event):
         self.searchView = view.searchHist(self)
 
@@ -571,3 +600,4 @@ class historicoControl():
 
     def closeSearchHandler(self, event):
         self.searchView.destroy()
+    #-------------------------------------------------------------------
