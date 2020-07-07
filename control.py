@@ -324,7 +324,7 @@ class gradeControl():
         if not self.listaGrades:
             self.listaGrades.append(gradeInsert)
             self.clear()
-            view.showMsg("Grade inserida 0!")
+            view.showMsg("Grade inserida!")
         else:
             for grd in self.listaGrades:
                 if curso == grd.getCurso() and ano == grd.getAno():
